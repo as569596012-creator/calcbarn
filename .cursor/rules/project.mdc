@@ -1,0 +1,33 @@
+---
+description: CalcBarn project overview, stack, and how to add a calculator
+alwaysApply: true
+---
+
+# CalcBarn(本项目)
+
+免费的**家居/装修/建筑计算器站**(英文,面向美国 Tier-1 流量)。
+选这个垂直是因为竞争小、RPM 比图片工具高($10–22)、抗 AI 替代、承包商爱分享链接。
+
+- 计算器:混凝土、油漆、地板、覆盖物(mulch)、碎石(gravel)。
+- 计划域名:`calcbarn.com`(待购买并接入 Cloudflare Pages)。
+- GitHub 仓库:`calcbarn`。
+- 本地目录:`c:\codes\buildcalc`(复用自 PicCrush 模板)。
+
+## 技术栈
+- Next.js (App Router) + TypeScript + TailwindCSS,`output: 'export'` 纯静态。
+- 计算全部在客户端,实时更新,支持 URL 参数分享结果。
+- Tailwind 主色 token 名为 `brand`(琥珀/橙色)。
+
+## 关键文件
+- [lib/calculators.ts](lib/calculators.ts):计算器注册表 `CALCULATORS`,每个含 `inputs`(输入字段)+ `compute(values)` 纯函数 + `formula`/文案/FAQ。
+- [components/CalculatorClient.tsx](components/CalculatorClient.tsx):交互组件,实时计算 + 复制分享链接。**只接收 `slug`**(含函数的定义不能跨 RSC 边界序列化,组件自己从注册表取)。
+- [components/CalculatorPageView.tsx](components/CalculatorPageView.tsx):计算器页布局 + JSON-LD(SoftwareApplication / HowTo / FAQPage / BreadcrumbList)。
+- [scripts/verify.mjs](scripts/verify.mjs):无头浏览器验证(含实时计算正确性)。
+
+## 新增一个计算器
+1. 在 `lib/calculators.ts` 的 `CALCULATORS` 加一个定义(`inputs` + `compute` 公式 + 文案/FAQ)。
+2. 新建 `app/<slug>/page.tsx`(照抄现有 4 行模板)。
+3. `node scripts/verify.mjs` 验证 → 提交(自动部署)。
+
+## 现状
+本机已构建并通过 16 项验证。**GitHub 推送 + Cloudflare 部署 + 域名接入尚未完成**(见 playbook 流程)。

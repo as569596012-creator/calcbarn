@@ -1,0 +1,32 @@
+---
+description: One-person-company website-traffic business goal, proven pipeline, and environment gotchas
+alwaysApply: true
+---
+
+# 一人公司 · 网站流量变现 playbook
+
+## 目标
+项目主理人在做"一人公司":靠网站**自然搜索流量变现**(展示广告 + 联盟)。
+策略是先把**一个站**跑通"建站→流量→收入"闭环、赚到一点钱,再用同一套模板**复制成多站组合**。
+当前已有两个站:CalcBarn(家居计算器,本项目 `c:\codes\buildcalc`)、PicCrush(图片工具,`c:\codes\tt`)。
+
+## 打法
+- 做免费、纯浏览器端的**工具站**(Next.js 静态导出 `output: 'export'`),攻**低竞争英文长尾词**(KGR<0.25)+ GEO(被 AI Overviews 引用)。
+- **不要堆 AI 文章**(2026 Google 对规模化薄内容是整站清退级处罚)。价值在"工具能用",不是长文。
+- 完整变现/养流量教程见 PicCrush 仓库(`c:\codes\tt`)根目录的 `学习.md`。
+
+## 已验证上线流程(照此顺序)
+1. 本机:`npm run build` → `node scripts/verify.mjs`(无头浏览器验证)。
+2. 推 GitHub → Cloudflare Pages 自动构建部署(push 即自动重新部署 = CI/CD)。
+3. 接自定义域名 → 设环境变量 `NEXT_PUBLIC_SITE_URL=https://域名` 并重新部署。
+4. 开 Cloudflare Web Analytics(需自定义域名;`.pages.dev` 子域名用不了)。
+5. Google Search Console 提交 `sitemap.xml` + 逐个"请求编入索引"。
+6. 养流量:Reddit / Product Hunt / Hacker News / 免费工具目录。
+7. 有真实流量后再接 **Ezoic / AdSense**(新站没流量申请会被拒;`.pages.dev` 不能用 AdSense)。
+
+## 环境注意事项(避免重复踩坑)
+- Shell 是 **Windows PowerShell**:勿用 bash 专属写法(`ls -la`、`2>/dev/null`、`grep`);需要时用 `| Out-String`、`Select-String`。文件操作用编辑器工具,别用 `cat`。
+- **GitHub 推送**:用用户提供的 classic token(只需 `repo` 权限),经 REST API(`POST /user/repos`)建仓库;remote 临时带 token 推送后用 `git remote set-url` 清除 token。**不要提交/推送 `.github/workflows/`**(token 无 `workflow` 权限会被拒;Cloudflare Pages 自带 Git 构建,无需 Actions)。token 是一次性的,用完提醒用户去 GitHub 吊销。
+- **Cloudflare 部署**:走 `Workers & Pages → Create application → Pages 选项卡 → Get started`(不是 Worker 流程)。构建命令 `npx next build`,输出目录 `out`,框架预设 `Next.js (Static HTML Export)`。
+- **查域名是否可注册**:用 Cloudflare DoH 查 NS 记录(`https://cloudflare-dns.com/dns-query?name=域名&type=NS`,`Status===3` 即空闲);RDAP 与直连 DNS 在本环境被屏蔽,不可靠。
+- 变现现实:展示广告需先有流量;图片工具 RPM 低($5–15),计算器/家居/金融更高。
