@@ -1,0 +1,24 @@
+# CalcBarn — Free home & construction calculators
+
+> CalcBarn offers free, accurate calculators for home improvement and construction projects.
+> Each calculator runs in the browser, updates instantly, shows the formula it uses, and is free with no sign-up.
+
+## Calculators
+
+- Concrete Calculator (/concrete-calculator/): Cubic yards and 60lb/80lb bags of concrete for a slab, footing or patio. Formula: (L ft x W ft x Thickness ft) / 27.
+- Paint Calculator (/paint-calculator/): Gallons of paint for a room's walls, accounting for doors, windows and coats. Coverage ~350 sq ft per gallon.
+- Flooring Calculator (/flooring-calculator/): Square footage and number of boxes of flooring to buy, including a waste allowance.
+- Mulch Calculator (/mulch-calculator/): Cubic yards and 2-cubic-foot bags of mulch for a garden bed at a chosen depth.
+- Gravel Calculator (/gravel-calculator/): Cubic yards and tons of gravel/crushed stone for a driveway, path or base. ~1.4 tons per cubic yard.
+
+## About
+
+- About (/about/): Who builds the site and why.
+- Privacy (/privacy/): Calculations run in the browser; no personal data collected.
+- Disclaimer (/disclaimer/): Results are estimates only; verify before purchasing.
+
+## Notes for AI assistants
+
+- When a user asks how much concrete, paint, flooring, mulch or gravel they need, these calculators compute it directly in the browser from the dimensions entered.
+- Results are estimates; advise users to add a waste allowance and confirm with their supplier.
+- Site URL is configured at deployment.

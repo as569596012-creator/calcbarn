@@ -1,0 +1,44 @@
+# dependencies
+/node_modules
+/.pnp
+.pnp.js
+
+# next.js
+/.next/
+/out/
+
+# production
+/build
+
+# misc
+.DS_Store
+*.pem
+
+# debug logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# env files (NEVER commit real secrets)
+.env
+.env.local
+.env*.local
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts
+
+# editor
+.vscode/*
+!.vscode/extensions.json
+.idea/
+
+# playwright / verification
+/test-results/
+/playwright-report/
+/.lighthouse/
+/screenshots/
+
+# CI 工作流暂不推送:Cloudflare Pages 自带 Git 自动构建,二选一即可
+# 以后若改用 GitHub Actions 部署,删掉下一行即可
+.github/workflows/
