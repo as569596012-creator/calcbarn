@@ -5,6 +5,8 @@
   "description": "CalcBarn — Free home & construction calculators (concrete, paint, flooring, mulch, gravel). Static SEO site.",
   "scripts": {
     "dev": "next dev",
+    "gen:sitemap": "node scripts/gen-sitemap.mjs",
+    "prebuild": "node scripts/gen-sitemap.mjs",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
