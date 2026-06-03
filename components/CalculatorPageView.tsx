@@ -63,8 +63,24 @@ export default function CalculatorPageView({ slug }: { slug: string }) {
       <section className="prose-tool mt-8">
         <h2 className="text-xl font-bold text-gray-900">About this calculator</h2>
         <p className="mt-3">{calc.body}</p>
-        <p className="mt-3 rounded-lg bg-gray-50 p-3 text-sm text-gray-600">
-          <strong className="text-gray-800">Formula:</strong> {calc.formula}
+      </section>
+
+      <section className="mt-8 rounded-2xl border border-amber-200 bg-amber-50 p-5">
+        <h2 className="flex items-center gap-2 text-base font-bold text-amber-900">
+          <span>🧮</span> How it&apos;s calculated
+        </h2>
+        <ol className="mt-3 space-y-2">
+          {calc.formulaSteps.map((step, i) => (
+            <li key={i} className="flex gap-3 text-sm">
+              <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-amber-600 text-xs font-bold text-white">
+                {i + 1}
+              </span>
+              <span className="text-amber-800">{step}</span>
+            </li>
+          ))}
+        </ol>
+        <p className="mt-4 rounded-lg bg-white/70 px-3 py-2 text-xs font-mono text-amber-900">
+          {calc.formula}
         </p>
       </section>
 

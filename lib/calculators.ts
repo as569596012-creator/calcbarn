@@ -32,7 +32,8 @@ export interface CalculatorDef {
   keywords: string[];
   howTo: string[];
   body: string;
-  formula: string; // 给用户看的公式说明
+  formula: string; // 给用户看的公式说明（单行摘要）
+  formulaSteps: string[]; // 分步推导，供"How it's calculated"卡片展示
   faq: FaqItem[];
   inputs: CalcInput[];
   compute: (v: Record<string, number>) => CalcResult[];
@@ -68,6 +69,12 @@ export const CALCULATORS: CalculatorDef[] = [
     ],
     body: "This concrete calculator works out the volume of a rectangular slab or footing and converts it to cubic yards (how ready-mix concrete is ordered) and to the number of pre-mixed bags. The math is simple: volume = length x width x thickness, converted to cubic yards by dividing by 27. An 80 lb bag of concrete yields about 0.60 cubic feet, a 60 lb bag about 0.45 cubic feet. For large pours it is almost always cheaper to order ready-mix by the yard than to buy bags. Always add about 5-10% extra for spillage and uneven subgrade.",
     formula: "Cubic yards = (Length ft x Width ft x Thickness ft) / 27, where Thickness ft = inches / 12.",
+    formulaSteps: [
+      "Step 1 — Convert thickness to feet: Thickness (ft) = Thickness (in) ÷ 12",
+      "Step 2 — Find volume in cubic feet: Volume (ft³) = Length × Width × Thickness (ft)",
+      "Step 3 — Convert to cubic yards: Cubic yards = Volume (ft³) ÷ 27",
+      "Step 4 — Count bags: 80 lb bag ≈ 0.60 ft³ → bags = ⌈Volume ÷ 0.60⌉",
+    ],
     faq: [
       {
         q: "How many 80lb bags of concrete are in a yard?",
@@ -123,6 +130,13 @@ export const CALCULATORS: CalculatorDef[] = [
     ],
     body: "This paint calculator estimates the paintable wall area of a room and converts it to gallons. It takes the wall perimeter times the height, subtracts a standard 21 sq ft per door and 15 sq ft per window, then multiplies by the number of coats. One gallon of wall paint covers roughly 350 square feet per coat. The result is rounded up because you can only buy whole cans, and it is wise to keep a little extra for touch-ups. For brand-new drywall or a big color change, plan on two coats.",
     formula: "Gallons = (Wall area - doors - windows) x Coats / 350 sq ft per gallon.",
+    formulaSteps: [
+      "Step 1 — Wall perimeter: Perimeter = 2 × (Length + Width)",
+      "Step 2 — Gross wall area: Gross = Perimeter × Wall Height",
+      "Step 3 — Subtract openings: Net area = Gross − (Doors × 21 ft²) − (Windows × 15 ft²)",
+      "Step 4 — Apply coats: Total area = Net area × Number of coats",
+      "Step 5 — Convert to gallons: Gallons = Total area ÷ 350 (coverage per gallon)",
+    ],
     faq: [
       {
         q: "How much does a gallon of paint cover?",
@@ -182,6 +196,11 @@ export const CALCULATORS: CalculatorDef[] = [
     ],
     body: "This flooring calculator finds the room's square footage and divides it by the coverage of one box to tell you how many boxes to buy. It adds a waste allowance (default 10%) for cuts, mistakes and future repairs - use 15% for diagonal or herringbone layouts, and 5% for simple straight runs in a square room. Always round up to whole boxes, and buy from the same batch/lot number so colors match. Keep one spare box for repairs down the road.",
     formula: "Boxes = ceil( Room area x (1 + Waste%) / Coverage per box ).",
+    formulaSteps: [
+      "Step 1 — Room area: Area = Length × Width",
+      "Step 2 — Add waste: Area with waste = Area × (1 + Waste% ÷ 100)",
+      "Step 3 — Divide by box coverage: Boxes = ⌈Area with waste ÷ Coverage per box⌉",
+    ],
     faq: [
       {
         q: "How much waste should I add for flooring?",
@@ -232,6 +251,12 @@ export const CALCULATORS: CalculatorDef[] = [
     ],
     body: "This mulch calculator multiplies the bed area by the depth to get volume, then converts it to cubic yards (how bulk mulch is sold) and to standard 2-cubic-foot bags. A 2-3 inch layer is ideal for most beds: deep enough to suppress weeds and hold moisture, but not so deep that it smothers roots. Bulk mulch by the cubic yard is far cheaper than bags once you need more than about 12-15 bags, so the bag count helps you decide whether to bag or go bulk.",
     formula: "Cubic yards = (Length ft x Width ft x Depth ft) / 27, where Depth ft = inches / 12.",
+    formulaSteps: [
+      "Step 1 — Convert depth to feet: Depth (ft) = Depth (in) ÷ 12",
+      "Step 2 — Volume in cubic feet: Volume (ft³) = Length × Width × Depth (ft)",
+      "Step 3 — Convert to cubic yards: Cubic yards = Volume (ft³) ÷ 27",
+      "Step 4 — Count bags: Bags = ⌈Volume (ft³) ÷ 2⌉  (standard 2 ft³ bag)",
+    ],
     faq: [
       {
         q: "How many bags of mulch are in a cubic yard?",
@@ -281,6 +306,12 @@ export const CALCULATORS: CalculatorDef[] = [
     ],
     body: "This gravel calculator finds the volume of your area and converts it to cubic yards and to tons. Gravel and crushed stone weigh roughly 1.4 tons per cubic yard (about 2,800 lb), though this varies a little with stone size and moisture. Suppliers usually sell gravel by the ton, so the tonnage figure is what you will order. For a driveway, a 4 inch depth over a compacted base is common; for a decorative path, 2 inches is usually enough.",
     formula: "Cubic yards = (Length ft x Width ft x Depth ft) / 27; Tons = Cubic yards x 1.4.",
+    formulaSteps: [
+      "Step 1 — Convert depth to feet: Depth (ft) = Depth (in) ÷ 12",
+      "Step 2 — Volume in cubic feet: Volume (ft³) = Length × Width × Depth (ft)",
+      "Step 3 — Convert to cubic yards: Cubic yards = Volume (ft³) ÷ 27",
+      "Step 4 — Estimate weight: Tons = Cubic yards × 1.4  (gravel ≈ 2,800 lb/yd³)",
+    ],
     faq: [
       {
         q: "How many tons of gravel are in a cubic yard?",
@@ -306,6 +337,398 @@ export const CALCULATORS: CalculatorDef[] = [
         { label: "Volume", value: `${fmt(cy)} cubic yards` },
         { label: "Volume", value: `${fmt(cf)} cubic feet` },
         { label: "Approx. weight", value: `${fmt(lbs, 0)} lb` },
+      ];
+    },
+  },
+  // ── Tile Calculator ──────────────────────────────────────────────────────
+  {
+    slug: "tile-calculator",
+    name: "Tile Calculator",
+    emoji: "🔲",
+    title: "Tile Calculator — How Many Tiles Do I Need (Free, with Waste)",
+    metaDescription:
+      "Free tile calculator. Find out how many tiles you need for a floor or wall by entering room size, tile size and waste allowance. Instant and accurate.",
+    h1: "Tile Calculator",
+    intro: "Find out how many tiles you need for a floor or wall, including a waste allowance.",
+    keywords: [
+      "tile calculator",
+      "how many tiles do i need",
+      "floor tile calculator",
+      "wall tile calculator",
+      "tile square footage calculator",
+    ],
+    howTo: [
+      "Enter the room length and width in feet.",
+      "Enter the tile size in inches (e.g. 12 for a 12×12 tile).",
+      "Set a waste allowance (10% is standard) and read the tile count.",
+    ],
+    body: "This tile calculator finds your room's square footage, converts each tile to square feet, and divides to get the tile count. It adds a waste factor for cuts, breakage and future repairs — 10% is typical for straight-lay patterns; use 15% for diagonal or herringbone. Always buy from the same lot number so colours and shades match. Keep a few spare tiles for repairs.",
+    formula: "Tiles = ceil( Room area × (1 + Waste%) / Tile area ), where Tile area = (Tile in ÷ 12)².",
+    formulaSteps: [
+      "Step 1 — Tile area in ft²: Tile area = (Tile size in inches ÷ 12)²",
+      "Step 2 — Room area: Area = Length × Width",
+      "Step 3 — Add waste: Area with waste = Area × (1 + Waste% ÷ 100)",
+      "Step 4 — Tile count: Tiles = ⌈Area with waste ÷ Tile area⌉",
+    ],
+    faq: [
+      {
+        q: "How much waste should I add for tiles?",
+        a: "10% is standard for straight-lay patterns. Use 15% for diagonal cuts and complex room shapes, which produce more off-cuts.",
+      },
+      {
+        q: "What size tile is easiest to install?",
+        a: "12×12 inch tiles are the most common and beginner-friendly. Larger formats (18×18 or 24×24) look impressive but require a flatter subfloor.",
+      },
+      {
+        q: "Can I use this for wall tiles too?",
+        a: "Yes. Enter the wall width and height instead of room length and width to calculate tiles for a shower wall or backsplash.",
+      },
+    ],
+    inputs: [
+      { id: "length", label: "Room length", unit: "ft", default: 12, min: 0, step: 0.5 },
+      { id: "width", label: "Room width", unit: "ft", default: 10, min: 0, step: 0.5 },
+      { id: "tileSize", label: "Tile size", unit: "in", default: 12, min: 1, step: 1 },
+      { id: "waste", label: "Waste allowance", unit: "%", default: 10, min: 0, step: 1 },
+    ],
+    compute: (v) => {
+      const roomArea = v.length * v.width;
+      const tileAreaFt = Math.pow(v.tileSize / 12, 2);
+      const withWaste = roomArea * (1 + v.waste / 100);
+      const tiles = Math.ceil(withWaste / tileAreaFt);
+      return [
+        { label: "Tiles needed", value: `${fmt(tiles, 0)} tiles`, highlight: true },
+        { label: "Room area", value: `${fmt(roomArea)} sq ft` },
+        { label: "Area incl. waste", value: `${fmt(withWaste)} sq ft` },
+        { label: "Tile area", value: `${fmt(tileAreaFt)} sq ft each` },
+      ];
+    },
+  },
+
+  // ── Deck Calculator ───────────────────────────────────────────────────────
+  {
+    slug: "deck-calculator",
+    name: "Deck Calculator",
+    emoji: "🪵",
+    title: "Deck Calculator — How Many Deck Boards Do I Need (Free)",
+    metaDescription:
+      "Free deck board calculator. Enter your deck size and board width to find out how many deck boards you need, including a waste factor. Instant and accurate.",
+    h1: "Deck Board Calculator",
+    intro: "Find out how many deck boards you need for your deck or patio, with waste included.",
+    keywords: [
+      "deck calculator",
+      "deck board calculator",
+      "how many deck boards do i need",
+      "deck material calculator",
+      "deck square footage calculator",
+    ],
+    howTo: [
+      "Enter the deck length and width in feet.",
+      "Enter the board width in inches (5.5\" is common for 2×6 boards).",
+      "Set a waste allowance and read the board count and linear feet.",
+    ],
+    body: "This deck board calculator works out how many boards you need to cover a rectangular deck. It divides the deck area by the coverage of one board (length × width). Add a 10% waste allowance for end cuts, bad boards and future repairs — use 15% if your deck has angled corners or a picture-frame border. Results show board count and total linear feet, which is how lumber yards typically sell decking.",
+    formula: "Boards = ceil( Deck area × (1 + Waste%) / (Board width ft × Board length ft) ).",
+    formulaSteps: [
+      "Step 1 — Board width in feet: Board width (ft) = Board width (in) ÷ 12",
+      "Step 2 — Deck area: Area = Deck length × Deck width",
+      "Step 3 — Add waste: Area with waste = Area × (1 + Waste% ÷ 100)",
+      "Step 4 — Board count: Boards = ⌈Area with waste ÷ (Board width ft × Deck length)⌉",
+      "Step 5 — Linear feet: Linear ft = Boards × Deck length",
+    ],
+    faq: [
+      {
+        q: "What width are most deck boards?",
+        a: "2×6 lumber has an actual width of 5.5 inches; 5/4×6 decking is also 5.5 inches wide. Use 3.5 inches for 2×4 boards.",
+      },
+      {
+        q: "How much waste should I add for decking?",
+        a: "10% is standard for a simple rectangular deck. Use 15% for decks with angled cuts, picture-frame borders or complex shapes.",
+      },
+      {
+        q: "Does this include the frame and joists?",
+        a: "No, this calculates decking boards only. The structural frame (beams, joists, posts, hardware) requires a separate estimate.",
+      },
+    ],
+    inputs: [
+      { id: "length", label: "Deck length", unit: "ft", default: 16, min: 0, step: 0.5 },
+      { id: "width", label: "Deck width", unit: "ft", default: 12, min: 0, step: 0.5 },
+      { id: "boardWidth", label: "Board width", unit: "in", default: 5.5, min: 1, step: 0.25 },
+      { id: "waste", label: "Waste allowance", unit: "%", default: 10, min: 0, step: 1 },
+    ],
+    compute: (v) => {
+      const deckArea = v.length * v.width;
+      const boardWidthFt = v.boardWidth / 12;
+      const withWaste = deckArea * (1 + v.waste / 100);
+      const boards = Math.ceil(withWaste / (boardWidthFt * v.length));
+      const linearFt = boards * v.length;
+      return [
+        { label: "Deck boards needed", value: `${fmt(boards, 0)} boards`, highlight: true },
+        { label: "Linear feet of decking", value: `${fmt(linearFt)} lin ft` },
+        { label: "Deck area", value: `${fmt(deckArea)} sq ft` },
+        { label: "Area incl. waste", value: `${fmt(withWaste)} sq ft` },
+      ];
+    },
+  },
+
+  // ── Fencing Calculator ────────────────────────────────────────────────────
+  {
+    slug: "fencing-calculator",
+    name: "Fencing Calculator",
+    emoji: "🏡",
+    title: "Fencing Calculator — Posts, Rails & Pickets Needed (Free)",
+    metaDescription:
+      "Free fencing calculator. Enter total fence length and spacing to find the number of posts, rails and pickets you need. Includes gates. Instant and accurate.",
+    h1: "Fencing Calculator",
+    intro: "Find out how many posts, rails and pickets you need to build your fence.",
+    keywords: [
+      "fencing calculator",
+      "fence calculator",
+      "how many fence posts do i need",
+      "fence material calculator",
+      "fence picket calculator",
+    ],
+    howTo: [
+      "Enter the total fence length in feet.",
+      "Enter the post spacing in feet (6–8 ft is standard).",
+      "Enter the number of gate openings, rails per section, and picket width.",
+    ],
+    body: "This fencing calculator works out the posts, rails and pickets for a standard wooden privacy or picket fence. Posts are spaced at equal intervals along the fence run; sections = posts − 1. Each section gets the specified number of rails. Pickets are spaced at the given width with a small gap (about 0.25 in). For gates, each opening needs two gate posts. Always add 10% extra pickets for cuts and waste.",
+    formula: "Posts = floor(Length / Spacing) + 1; Pickets per section = ceil(Spacing / Picket width); Total pickets = Pickets per section × Sections.",
+    formulaSteps: [
+      "Step 1 — Number of sections: Sections = ⌊Total length ÷ Post spacing⌋",
+      "Step 2 — Number of posts: Posts = Sections + 1 + (Gates × 2) extra gate posts",
+      "Step 3 — Rails: Total rails = Sections × Rails per section",
+      "Step 4 — Pickets per section: Pickets = ⌈Post spacing ÷ Picket width⌉",
+      "Step 5 — Total pickets: Total = Pickets per section × Sections",
+    ],
+    faq: [
+      {
+        q: "How far apart should fence posts be?",
+        a: "6 to 8 feet is the standard spacing. Closer spacing (6 ft) is stronger; 8 ft spacing works with heavier lumber.",
+      },
+      {
+        q: "How deep should fence posts be set?",
+        a: "One-third of the post's total length should be in the ground. For a 6 ft fence use 9 ft posts set 3 ft deep.",
+      },
+      {
+        q: "How many rails does a fence need?",
+        a: "Two rails (top and bottom) is standard for fences up to 4 ft. Use three rails for 6 ft privacy fences.",
+      },
+    ],
+    inputs: [
+      { id: "length", label: "Total fence length", unit: "ft", default: 100, min: 0, step: 1 },
+      { id: "spacing", label: "Post spacing", unit: "ft", default: 8, min: 1, step: 0.5 },
+      { id: "gates", label: "Gate openings", default: 1, min: 0, step: 1 },
+      { id: "rails", label: "Rails per section", default: 2, min: 1, step: 1 },
+      { id: "picketWidth", label: "Picket width", unit: "in", default: 3.5, min: 1, step: 0.25 },
+    ],
+    compute: (v) => {
+      const sections = Math.floor(v.length / v.spacing);
+      const posts = sections + 1 + v.gates * 2;
+      const totalRails = sections * v.rails;
+      const picketWidthFt = v.picketWidth / 12;
+      const pickets = Math.ceil(sections * (v.spacing / picketWidthFt));
+      return [
+        { label: "Fence posts", value: `${fmt(posts, 0)} posts`, highlight: true },
+        { label: "Rails", value: `${fmt(totalRails, 0)} rails` },
+        { label: "Pickets", value: `${fmt(pickets, 0)} pickets` },
+        { label: "Sections", value: `${fmt(sections, 0)} sections` },
+      ];
+    },
+  },
+
+  // ── Drywall Calculator ────────────────────────────────────────────────────
+  {
+    slug: "drywall-calculator",
+    name: "Drywall Calculator",
+    emoji: "🧱",
+    title: "Drywall Calculator — Sheets & Joint Compound Needed (Free)",
+    metaDescription:
+      "Free drywall calculator. Enter wall and ceiling dimensions to find how many 4×8 drywall sheets you need, plus joint compound and tape. Instant and accurate.",
+    h1: "Drywall Calculator",
+    intro: "Find out how many sheets of drywall and how much joint compound you need for your project.",
+    keywords: [
+      "drywall calculator",
+      "how many sheets of drywall do i need",
+      "sheetrock calculator",
+      "drywall sheet calculator",
+      "joint compound calculator",
+    ],
+    howTo: [
+      "Enter the total wall area in square feet (length × height for each wall, added together).",
+      "Enter the ceiling area if you are drywalling the ceiling too.",
+      "Set a waste allowance (10% is typical) and read the sheet count.",
+    ],
+    body: "This drywall calculator divides your total area by the coverage of one standard 4×8 sheet (32 sq ft). It adds a waste allowance for cuts around outlets, windows and doors. Joint compound is estimated at roughly 0.053 gallons per square foot for three-coat work (that's about 1 gallon per 19 sq ft). Drywall tape is estimated at 1 linear foot per square foot of drywall. Always round up to whole sheets and buckets.",
+    formula: "Sheets = ceil( Total area × (1 + Waste%) / 32 ); Joint compound (gal) = Total area × 0.053.",
+    formulaSteps: [
+      "Step 1 — Total area: Total = Wall area + Ceiling area",
+      "Step 2 — Add waste: Area with waste = Total × (1 + Waste% ÷ 100)",
+      "Step 3 — Sheets: Sheets = ⌈Area with waste ÷ 32⌉  (one 4×8 sheet = 32 ft²)",
+      "Step 4 — Joint compound: Gallons = ⌈Total area × 0.053⌉",
+      "Step 5 — Drywall tape: Tape (ft) = Total area × 1",
+    ],
+    faq: [
+      {
+        q: "What size is a standard sheet of drywall?",
+        a: "4 feet wide by 8 feet tall is the most common size, covering 32 square feet. 4×12 sheets are also available and reduce seams.",
+      },
+      {
+        q: "How thick should drywall be?",
+        a: "1/2 inch is standard for walls and ceilings. Use 5/8 inch for fire-rated assemblies or ceilings with widely spaced joists.",
+      },
+      {
+        q: "How much joint compound do I need?",
+        a: "A rough guide is one 4.5-gallon bucket per 100 square feet of drywall for a three-coat finish. This calculator estimates that automatically.",
+      },
+    ],
+    inputs: [
+      { id: "wallArea", label: "Total wall area", unit: "sq ft", default: 600, min: 0, step: 10 },
+      { id: "ceilingArea", label: "Ceiling area", unit: "sq ft", default: 200, min: 0, step: 10 },
+      { id: "waste", label: "Waste allowance", unit: "%", default: 10, min: 0, step: 1 },
+    ],
+    compute: (v) => {
+      const totalArea = v.wallArea + v.ceilingArea;
+      const withWaste = totalArea * (1 + v.waste / 100);
+      const sheets = Math.ceil(withWaste / 32);
+      const compound = Math.ceil(totalArea * 0.053);
+      const tape = Math.ceil(totalArea);
+      return [
+        { label: "Drywall sheets (4×8)", value: `${fmt(sheets, 0)} sheets`, highlight: true },
+        { label: "Joint compound", value: `${fmt(compound, 0)} gallons` },
+        { label: "Drywall tape", value: `${fmt(tape, 0)} lin ft` },
+        { label: "Total area incl. waste", value: `${fmt(withWaste)} sq ft` },
+      ];
+    },
+  },
+
+  // ── Asphalt Calculator ────────────────────────────────────────────────────
+  {
+    slug: "asphalt-calculator",
+    name: "Asphalt Calculator",
+    emoji: "🚗",
+    title: "Asphalt Calculator — Tons of Asphalt for Driveways & Paths (Free)",
+    metaDescription:
+      "Free asphalt calculator. Estimate the tons of hot-mix asphalt needed for a driveway, parking lot or path. Enter dimensions and depth. Instant and accurate.",
+    h1: "Asphalt Calculator",
+    intro: "Estimate the tons of asphalt you need for a driveway, parking lot or path.",
+    keywords: [
+      "asphalt calculator",
+      "blacktop calculator",
+      "how much asphalt do i need",
+      "asphalt tonnage calculator",
+      "driveway asphalt calculator",
+    ],
+    howTo: [
+      "Enter the length and width of the area in feet.",
+      "Enter the asphalt depth in inches (2–3\" for a top coat; 4\" for a full driveway).",
+      "Read the cubic yards and tons of hot-mix asphalt to order.",
+    ],
+    body: "This asphalt calculator works out the volume of your paved area and converts it to tons of hot-mix asphalt (HMA). Asphalt weighs about 145 lb per cubic foot, or roughly 2.0 tons per cubic yard — slightly heavier than gravel. For a typical residential driveway, use a 4-inch depth over a compacted gravel base. For a resurfacing overlay (top coat only), 2 inches is common. Suppliers sell asphalt by the ton, so that figure is what you will give them when ordering.",
+    formula: "Cubic yards = (Length × Width × Depth ft) / 27; Tons = Cubic yards × 2.0.",
+    formulaSteps: [
+      "Step 1 — Convert depth to feet: Depth (ft) = Depth (in) ÷ 12",
+      "Step 2 — Volume in cubic feet: Volume (ft³) = Length × Width × Depth (ft)",
+      "Step 3 — Convert to cubic yards: Cubic yards = Volume (ft³) ÷ 27",
+      "Step 4 — Weight in tons: Tons = Cubic yards × 2.0  (HMA ≈ 145 lb/ft³ ≈ 2.0 t/yd³)",
+    ],
+    faq: [
+      {
+        q: "How thick should a residential driveway be?",
+        a: "A new residential driveway typically uses 4 inches of compacted hot-mix asphalt over a 6-inch compacted gravel base. Resurface overlays are usually 2 inches.",
+      },
+      {
+        q: "How many tons of asphalt are in a cubic yard?",
+        a: "Hot-mix asphalt weighs about 145 lb per cubic foot, which is approximately 2.0 tons per cubic yard. This is denser than gravel (1.4 t/yd³).",
+      },
+      {
+        q: "What is the difference between asphalt and blacktop?",
+        a: "They are essentially the same material. 'Blacktop' is the common residential term; 'asphalt' or 'hot-mix asphalt (HMA)' is the industry term.",
+      },
+    ],
+    inputs: [
+      { id: "length", label: "Length", unit: "ft", default: 40, min: 0, step: 1 },
+      { id: "width", label: "Width", unit: "ft", default: 12, min: 0, step: 0.5 },
+      { id: "depth", label: "Depth", unit: "in", default: 4, min: 0, step: 0.5 },
+    ],
+    compute: (v) => {
+      const cf = v.length * v.width * (v.depth / 12);
+      const cy = cf / 27;
+      const tons = cy * 2.0;
+      const lbs = tons * 2000;
+      return [
+        { label: "Asphalt needed", value: `${fmt(tons)} tons`, highlight: true },
+        { label: "Volume", value: `${fmt(cy)} cubic yards` },
+        { label: "Volume", value: `${fmt(cf)} cubic feet` },
+        { label: "Approx. weight", value: `${fmt(lbs, 0)} lb` },
+      ];
+    },
+  },
+
+  // ── Roof Shingles Calculator ──────────────────────────────────────────────
+  {
+    slug: "roof-shingles-calculator",
+    name: "Roof Shingles Calculator",
+    emoji: "🏠",
+    title: "Roof Shingles Calculator — Squares & Bundles Needed (Free)",
+    metaDescription:
+      "Free roof shingles calculator. Enter roof length, width and pitch to find how many squares and bundles of shingles you need. Includes waste factor. Instant.",
+    h1: "Roof Shingles Calculator",
+    intro: "Find out how many squares and bundles of shingles you need for your roof, adjusted for pitch and waste.",
+    keywords: [
+      "roof shingles calculator",
+      "how many shingles do i need",
+      "roofing calculator",
+      "roofing squares calculator",
+      "bundles of shingles calculator",
+    ],
+    howTo: [
+      "Enter the roof footprint (length × width of the house) in feet.",
+      "Select the roof pitch (rise over run, e.g. 6/12 is a moderate slope).",
+      "Set a waste allowance and read the squares and bundles to buy.",
+    ],
+    body: "Roofing is measured in squares: one square = 100 sq ft of roof surface. This calculator multiplies the flat footprint by a pitch factor to get the actual sloped surface area, then adds a waste allowance for hip cuts, ridge caps and starter strips. Standard 3-tab or architectural shingles pack 3 bundles per square; some premium shingles use 4. Always add at least 10% waste — 15% for complex roofs with many valleys and hips.",
+    formula: "Roof area = Footprint × Pitch factor; Squares = ceil( Roof area × (1+Waste%) / 100 ); Bundles = Squares × 3.",
+    formulaSteps: [
+      "Step 1 — Flat footprint: Footprint = Length × Width",
+      "Step 2 — Pitch factor (slope correction): e.g. 4/12 pitch → ×1.054, 6/12 → ×1.118, 8/12 → ×1.202, 12/12 → ×1.414",
+      "Step 3 — Actual roof area: Roof area = Footprint × Pitch factor",
+      "Step 4 — Add waste: Area with waste = Roof area × (1 + Waste% ÷ 100)",
+      "Step 5 — Squares: Squares = ⌈Area with waste ÷ 100⌉",
+      "Step 6 — Bundles: Bundles = Squares × 3  (standard 3-bundle shingles)",
+    ],
+    faq: [
+      {
+        q: "What is a roofing square?",
+        a: "One roofing square equals 100 square feet of roof surface area. It is the standard unit roofers use to price and order materials.",
+      },
+      {
+        q: "How many bundles of shingles are in a square?",
+        a: "Most standard 3-tab and architectural shingles come 3 bundles per square. Some heavier premium shingles require 4 bundles per square — check the package.",
+      },
+      {
+        q: "How much waste should I add for shingles?",
+        a: "10% is the minimum for a simple gable roof. Add 15% for roofs with hips, valleys, dormers or skylights due to extra cuts.",
+      },
+    ],
+    inputs: [
+      { id: "length", label: "Roof length (footprint)", unit: "ft", default: 40, min: 0, step: 1 },
+      { id: "width", label: "Roof width (footprint)", unit: "ft", default: 30, min: 0, step: 1 },
+      { id: "pitch", label: "Roof pitch (rise/12)", unit: "/12", default: 6, min: 0, step: 1 },
+      { id: "waste", label: "Waste allowance", unit: "%", default: 10, min: 0, step: 1 },
+    ],
+    compute: (v) => {
+      const pitchFactor = Math.sqrt(1 + Math.pow(v.pitch / 12, 2));
+      const footprint = v.length * v.width;
+      const roofArea = footprint * pitchFactor;
+      const withWaste = roofArea * (1 + v.waste / 100);
+      const squares = Math.ceil(withWaste / 100);
+      const bundles = squares * 3;
+      return [
+        { label: "Roofing squares", value: `${fmt(squares, 0)} squares`, highlight: true },
+        { label: "Bundles of shingles", value: `${fmt(bundles, 0)} bundles` },
+        { label: "Actual roof area", value: `${fmt(roofArea)} sq ft` },
+        { label: "Pitch factor", value: `×${fmt(pitchFactor)}` },
       ];
     },
   },

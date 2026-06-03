@@ -42,3 +42,6 @@ next-env.d.ts
 # CI 工作流暂不推送:Cloudflare Pages 自带 Git 自动构建,二选一即可
 # 以后若改用 GitHub Actions 部署,删掉下一行即可
 .github/workflows/
+
+# Cursor skills 含本地凭据,只保留在本地
+.cursor/skills/
