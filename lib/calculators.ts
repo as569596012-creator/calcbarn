@@ -47,67 +47,6 @@ function fmt(n: number, digits = 2): string {
 
 export const CALCULATORS: CalculatorDef[] = [
   {
-    slug: "concrete-calculator",
-    name: "Concrete Calculator",
-    emoji: "🧱",
-    title: "Concrete Calculator — Yards & Bags for Slabs and Footings (Free)",
-    metaDescription:
-      "Free concrete calculator. Estimate how many cubic yards and 60lb / 80lb bags of concrete you need for a slab, footing or patio. Instant, accurate, mobile friendly.",
-    h1: "Concrete Calculator",
-    intro: "Estimate the cubic yards and bags of concrete you need for a slab, footing or patio.",
-    keywords: [
-      "concrete calculator",
-      "how much concrete do i need",
-      "concrete yardage calculator",
-      "concrete bag calculator",
-      "cubic yards of concrete",
-    ],
-    howTo: [
-      "Enter the length and width of your slab in feet.",
-      "Enter the thickness in inches (4\" is typical for a slab).",
-      "Read the cubic yards and number of bags you need.",
-    ],
-    body: "This concrete calculator works out the volume of a rectangular slab or footing and converts it to cubic yards (how ready-mix concrete is ordered) and to the number of pre-mixed bags. The math is simple: volume = length x width x thickness, converted to cubic yards by dividing by 27. An 80 lb bag of concrete yields about 0.60 cubic feet, a 60 lb bag about 0.45 cubic feet. For large pours it is almost always cheaper to order ready-mix by the yard than to buy bags. Always add about 5-10% extra for spillage and uneven subgrade.",
-    formula: "Cubic yards = (Length ft x Width ft x Thickness ft) / 27, where Thickness ft = inches / 12.",
-    formulaSteps: [
-      "Step 1 — Convert thickness to feet: Thickness (ft) = Thickness (in) ÷ 12",
-      "Step 2 — Find volume in cubic feet: Volume (ft³) = Length × Width × Thickness (ft)",
-      "Step 3 — Convert to cubic yards: Cubic yards = Volume (ft³) ÷ 27",
-      "Step 4 — Count bags: 80 lb bag ≈ 0.60 ft³ → bags = ⌈Volume ÷ 0.60⌉",
-    ],
-    faq: [
-      {
-        q: "How many 80lb bags of concrete are in a yard?",
-        a: "A cubic yard is 27 cubic feet. An 80 lb bag yields about 0.60 cubic feet, so it takes roughly 45 bags to make one cubic yard.",
-      },
-      {
-        q: "How thick should a concrete slab be?",
-        a: "4 inches is standard for patios, walkways and shed floors. Use 5-6 inches for driveways or anything bearing heavy vehicles.",
-      },
-      {
-        q: "Should I add extra concrete?",
-        a: "Yes. Add about 5-10% to allow for spillage, over-excavation and uneven ground so you do not run short mid-pour.",
-      },
-    ],
-    inputs: [
-      { id: "length", label: "Length", unit: "ft", default: 10, min: 0, step: 0.5 },
-      { id: "width", label: "Width", unit: "ft", default: 10, min: 0, step: 0.5 },
-      { id: "thickness", label: "Thickness", unit: "in", default: 4, min: 0, step: 0.5 },
-    ],
-    compute: (v) => {
-      const cf = v.length * v.width * (v.thickness / 12);
-      const cy = cf / 27;
-      const bags80 = Math.ceil(cf / 0.6);
-      const bags60 = Math.ceil(cf / 0.45);
-      return [
-        { label: "Concrete needed", value: `${fmt(cy)} cubic yards`, highlight: true },
-        { label: "Volume", value: `${fmt(cf)} cubic feet` },
-        { label: "80 lb bags", value: `${fmt(bags80, 0)} bags` },
-        { label: "60 lb bags", value: `${fmt(bags60, 0)} bags` },
-      ];
-    },
-  },
-  {
     slug: "paint-calculator",
     name: "Paint Calculator",
     emoji: "🎨",
@@ -173,6 +112,7 @@ export const CALCULATORS: CalculatorDef[] = [
       ];
     },
   },
+
   {
     slug: "flooring-calculator",
     name: "Flooring Calculator",
@@ -228,118 +168,7 @@ export const CALCULATORS: CalculatorDef[] = [
       ];
     },
   },
-  {
-    slug: "mulch-calculator",
-    name: "Mulch Calculator",
-    emoji: "🌳",
-    title: "Mulch Calculator — Cubic Yards & Bags of Mulch (Free)",
-    metaDescription:
-      "Free mulch calculator. Find how many cubic yards and 2-cubic-foot bags of mulch you need to cover a garden bed at a given depth. Instant and accurate.",
-    h1: "Mulch Calculator",
-    intro: "Find how many cubic yards and bags of mulch you need for your garden beds.",
-    keywords: [
-      "mulch calculator",
-      "how much mulch do i need",
-      "cubic yards of mulch",
-      "mulch bag calculator",
-      "bags of mulch per yard",
-    ],
-    howTo: [
-      "Enter the bed length and width in feet.",
-      "Enter the mulch depth in inches (2-3\" is typical).",
-      "Read the cubic yards and number of bags you need.",
-    ],
-    body: "This mulch calculator multiplies the bed area by the depth to get volume, then converts it to cubic yards (how bulk mulch is sold) and to standard 2-cubic-foot bags. A 2-3 inch layer is ideal for most beds: deep enough to suppress weeds and hold moisture, but not so deep that it smothers roots. Bulk mulch by the cubic yard is far cheaper than bags once you need more than about 12-15 bags, so the bag count helps you decide whether to bag or go bulk.",
-    formula: "Cubic yards = (Length ft x Width ft x Depth ft) / 27, where Depth ft = inches / 12.",
-    formulaSteps: [
-      "Step 1 — Convert depth to feet: Depth (ft) = Depth (in) ÷ 12",
-      "Step 2 — Volume in cubic feet: Volume (ft³) = Length × Width × Depth (ft)",
-      "Step 3 — Convert to cubic yards: Cubic yards = Volume (ft³) ÷ 27",
-      "Step 4 — Count bags: Bags = ⌈Volume (ft³) ÷ 2⌉  (standard 2 ft³ bag)",
-    ],
-    faq: [
-      {
-        q: "How many bags of mulch are in a cubic yard?",
-        a: "A cubic yard is 27 cubic feet, so it takes 13.5 bags of the standard 2-cubic-foot size to equal one cubic yard.",
-      },
-      {
-        q: "How deep should mulch be?",
-        a: "2-3 inches is ideal for most garden beds. Too deep can suffocate roots and waste material.",
-      },
-    ],
-    inputs: [
-      { id: "length", label: "Bed length", unit: "ft", default: 20, min: 0, step: 0.5 },
-      { id: "width", label: "Bed width", unit: "ft", default: 4, min: 0, step: 0.5 },
-      { id: "depth", label: "Depth", unit: "in", default: 3, min: 0, step: 0.5 },
-    ],
-    compute: (v) => {
-      const cf = v.length * v.width * (v.depth / 12);
-      const cy = cf / 27;
-      const bags = Math.ceil(cf / 2);
-      return [
-        { label: "Mulch needed", value: `${fmt(cy)} cubic yards`, highlight: true },
-        { label: "Volume", value: `${fmt(cf)} cubic feet` },
-        { label: "2 cu ft bags", value: `${fmt(bags, 0)} bags` },
-      ];
-    },
-  },
-  {
-    slug: "gravel-calculator",
-    name: "Gravel Calculator",
-    emoji: "🪨",
-    title: "Gravel Calculator — Cubic Yards & Tons of Gravel (Free)",
-    metaDescription:
-      "Free gravel calculator. Estimate the cubic yards, tons and weight of gravel or crushed stone needed for a driveway, path or base layer. Instant and accurate.",
-    h1: "Gravel Calculator",
-    intro: "Estimate the cubic yards and tons of gravel needed for a driveway, path or base.",
-    keywords: [
-      "gravel calculator",
-      "how much gravel do i need",
-      "cubic yards of gravel",
-      "gravel tonnage calculator",
-      "crushed stone calculator",
-    ],
-    howTo: [
-      "Enter the length and width of the area in feet.",
-      "Enter the gravel depth in inches (2-4\" is typical).",
-      "Read the cubic yards and approximate tons you need.",
-    ],
-    body: "This gravel calculator finds the volume of your area and converts it to cubic yards and to tons. Gravel and crushed stone weigh roughly 1.4 tons per cubic yard (about 2,800 lb), though this varies a little with stone size and moisture. Suppliers usually sell gravel by the ton, so the tonnage figure is what you will order. For a driveway, a 4 inch depth over a compacted base is common; for a decorative path, 2 inches is usually enough.",
-    formula: "Cubic yards = (Length ft x Width ft x Depth ft) / 27; Tons = Cubic yards x 1.4.",
-    formulaSteps: [
-      "Step 1 — Convert depth to feet: Depth (ft) = Depth (in) ÷ 12",
-      "Step 2 — Volume in cubic feet: Volume (ft³) = Length × Width × Depth (ft)",
-      "Step 3 — Convert to cubic yards: Cubic yards = Volume (ft³) ÷ 27",
-      "Step 4 — Estimate weight: Tons = Cubic yards × 1.4  (gravel ≈ 2,800 lb/yd³)",
-    ],
-    faq: [
-      {
-        q: "How many tons of gravel are in a cubic yard?",
-        a: "About 1.4 tons (roughly 2,800 lb) per cubic yard for typical gravel and crushed stone, varying slightly with stone type and moisture.",
-      },
-      {
-        q: "How deep should gravel be for a driveway?",
-        a: "About 4 inches over a well-compacted sub-base is common for residential driveways. Decorative paths can use 2 inches.",
-      },
-    ],
-    inputs: [
-      { id: "length", label: "Length", unit: "ft", default: 20, min: 0, step: 0.5 },
-      { id: "width", label: "Width", unit: "ft", default: 10, min: 0, step: 0.5 },
-      { id: "depth", label: "Depth", unit: "in", default: 4, min: 0, step: 0.5 },
-    ],
-    compute: (v) => {
-      const cf = v.length * v.width * (v.depth / 12);
-      const cy = cf / 27;
-      const tons = cy * 1.4;
-      const lbs = tons * 2000;
-      return [
-        { label: "Gravel needed", value: `${fmt(tons)} tons`, highlight: true },
-        { label: "Volume", value: `${fmt(cy)} cubic yards` },
-        { label: "Volume", value: `${fmt(cf)} cubic feet` },
-        { label: "Approx. weight", value: `${fmt(lbs, 0)} lb` },
-      ];
-    },
-  },
+
   // ── Tile Calculator ──────────────────────────────────────────────────────
   {
     slug: "tile-calculator",
@@ -404,135 +233,64 @@ export const CALCULATORS: CalculatorDef[] = [
     },
   },
 
-  // ── Deck Calculator ───────────────────────────────────────────────────────
   {
-    slug: "deck-calculator",
-    name: "Deck Calculator",
-    emoji: "🪵",
-    title: "Deck Calculator — How Many Deck Boards Do I Need (Free)",
+    slug: "concrete-calculator",
+    name: "Concrete Calculator",
+    emoji: "🧱",
+    title: "Concrete Calculator — Yards & Bags for Slabs and Footings (Free)",
     metaDescription:
-      "Free deck board calculator. Enter your deck size and board width to find out how many deck boards you need, including a waste factor. Instant and accurate.",
-    h1: "Deck Board Calculator",
-    intro: "Find out how many deck boards you need for your deck or patio, with waste included.",
+      "Free concrete calculator. Estimate how many cubic yards and 60lb / 80lb bags of concrete you need for a slab, footing or patio. Instant, accurate, mobile friendly.",
+    h1: "Concrete Calculator",
+    intro: "Estimate the cubic yards and bags of concrete you need for a slab, footing or patio.",
     keywords: [
-      "deck calculator",
-      "deck board calculator",
-      "how many deck boards do i need",
-      "deck material calculator",
-      "deck square footage calculator",
+      "concrete calculator",
+      "how much concrete do i need",
+      "concrete yardage calculator",
+      "concrete bag calculator",
+      "cubic yards of concrete",
     ],
     howTo: [
-      "Enter the deck length and width in feet.",
-      "Enter the board width in inches (5.5\" is common for 2×6 boards).",
-      "Set a waste allowance and read the board count and linear feet.",
+      "Enter the length and width of your slab in feet.",
+      "Enter the thickness in inches (4\" is typical for a slab).",
+      "Read the cubic yards and number of bags you need.",
     ],
-    body: "This deck board calculator works out how many boards you need to cover a rectangular deck. It divides the deck area by the coverage of one board (length × width). Add a 10% waste allowance for end cuts, bad boards and future repairs — use 15% if your deck has angled corners or a picture-frame border. Results show board count and total linear feet, which is how lumber yards typically sell decking.",
-    formula: "Boards = ceil( Deck area × (1 + Waste%) / (Board width ft × Board length ft) ).",
+    body: "This concrete calculator works out the volume of a rectangular slab or footing and converts it to cubic yards (how ready-mix concrete is ordered) and to the number of pre-mixed bags. The math is simple: volume = length x width x thickness, converted to cubic yards by dividing by 27. An 80 lb bag of concrete yields about 0.60 cubic feet, a 60 lb bag about 0.45 cubic feet. For large pours it is almost always cheaper to order ready-mix by the yard than to buy bags. Always add about 5-10% extra for spillage and uneven subgrade.",
+    formula: "Cubic yards = (Length ft x Width ft x Thickness ft) / 27, where Thickness ft = inches / 12.",
     formulaSteps: [
-      "Step 1 — Board width in feet: Board width (ft) = Board width (in) ÷ 12",
-      "Step 2 — Deck area: Area = Deck length × Deck width",
-      "Step 3 — Add waste: Area with waste = Area × (1 + Waste% ÷ 100)",
-      "Step 4 — Board count: Boards = ⌈Area with waste ÷ (Board width ft × Deck length)⌉",
-      "Step 5 — Linear feet: Linear ft = Boards × Deck length",
+      "Step 1 — Convert thickness to feet: Thickness (ft) = Thickness (in) ÷ 12",
+      "Step 2 — Find volume in cubic feet: Volume (ft³) = Length × Width × Thickness (ft)",
+      "Step 3 — Convert to cubic yards: Cubic yards = Volume (ft³) ÷ 27",
+      "Step 4 — Count bags: 80 lb bag ≈ 0.60 ft³ → bags = ⌈Volume ÷ 0.60⌉",
     ],
     faq: [
       {
-        q: "What width are most deck boards?",
-        a: "2×6 lumber has an actual width of 5.5 inches; 5/4×6 decking is also 5.5 inches wide. Use 3.5 inches for 2×4 boards.",
+        q: "How many 80lb bags of concrete are in a yard?",
+        a: "A cubic yard is 27 cubic feet. An 80 lb bag yields about 0.60 cubic feet, so it takes roughly 45 bags to make one cubic yard.",
       },
       {
-        q: "How much waste should I add for decking?",
-        a: "10% is standard for a simple rectangular deck. Use 15% for decks with angled cuts, picture-frame borders or complex shapes.",
+        q: "How thick should a concrete slab be?",
+        a: "4 inches is standard for patios, walkways and shed floors. Use 5-6 inches for driveways or anything bearing heavy vehicles.",
       },
       {
-        q: "Does this include the frame and joists?",
-        a: "No, this calculates decking boards only. The structural frame (beams, joists, posts, hardware) requires a separate estimate.",
+        q: "Should I add extra concrete?",
+        a: "Yes. Add about 5-10% to allow for spillage, over-excavation and uneven ground so you do not run short mid-pour.",
       },
     ],
     inputs: [
-      { id: "length", label: "Deck length", unit: "ft", default: 16, min: 0, step: 0.5 },
-      { id: "width", label: "Deck width", unit: "ft", default: 12, min: 0, step: 0.5 },
-      { id: "boardWidth", label: "Board width", unit: "in", default: 5.5, min: 1, step: 0.25 },
-      { id: "waste", label: "Waste allowance", unit: "%", default: 10, min: 0, step: 1 },
+      { id: "length", label: "Length", unit: "ft", default: 10, min: 0, step: 0.5 },
+      { id: "width", label: "Width", unit: "ft", default: 10, min: 0, step: 0.5 },
+      { id: "thickness", label: "Thickness", unit: "in", default: 4, min: 0, step: 0.5 },
     ],
     compute: (v) => {
-      const deckArea = v.length * v.width;
-      const boardWidthFt = v.boardWidth / 12;
-      const withWaste = deckArea * (1 + v.waste / 100);
-      const boards = Math.ceil(withWaste / (boardWidthFt * v.length));
-      const linearFt = boards * v.length;
+      const cf = v.length * v.width * (v.thickness / 12);
+      const cy = cf / 27;
+      const bags80 = Math.ceil(cf / 0.6);
+      const bags60 = Math.ceil(cf / 0.45);
       return [
-        { label: "Deck boards needed", value: `${fmt(boards, 0)} boards`, highlight: true },
-        { label: "Linear feet of decking", value: `${fmt(linearFt)} lin ft` },
-        { label: "Deck area", value: `${fmt(deckArea)} sq ft` },
-        { label: "Area incl. waste", value: `${fmt(withWaste)} sq ft` },
-      ];
-    },
-  },
-
-  // ── Fencing Calculator ────────────────────────────────────────────────────
-  {
-    slug: "fencing-calculator",
-    name: "Fencing Calculator",
-    emoji: "🏡",
-    title: "Fencing Calculator — Posts, Rails & Pickets Needed (Free)",
-    metaDescription:
-      "Free fencing calculator. Enter total fence length and spacing to find the number of posts, rails and pickets you need. Includes gates. Instant and accurate.",
-    h1: "Fencing Calculator",
-    intro: "Find out how many posts, rails and pickets you need to build your fence.",
-    keywords: [
-      "fencing calculator",
-      "fence calculator",
-      "how many fence posts do i need",
-      "fence material calculator",
-      "fence picket calculator",
-    ],
-    howTo: [
-      "Enter the total fence length in feet.",
-      "Enter the post spacing in feet (6–8 ft is standard).",
-      "Enter the number of gate openings, rails per section, and picket width.",
-    ],
-    body: "This fencing calculator works out the posts, rails and pickets for a standard wooden privacy or picket fence. Posts are spaced at equal intervals along the fence run; sections = posts − 1. Each section gets the specified number of rails. Pickets are spaced at the given width with a small gap (about 0.25 in). For gates, each opening needs two gate posts. Always add 10% extra pickets for cuts and waste.",
-    formula: "Posts = floor(Length / Spacing) + 1; Pickets per section = ceil(Spacing / Picket width); Total pickets = Pickets per section × Sections.",
-    formulaSteps: [
-      "Step 1 — Number of sections: Sections = ⌊Total length ÷ Post spacing⌋",
-      "Step 2 — Number of posts: Posts = Sections + 1 + (Gates × 2) extra gate posts",
-      "Step 3 — Rails: Total rails = Sections × Rails per section",
-      "Step 4 — Pickets per section: Pickets = ⌈Post spacing ÷ Picket width⌉",
-      "Step 5 — Total pickets: Total = Pickets per section × Sections",
-    ],
-    faq: [
-      {
-        q: "How far apart should fence posts be?",
-        a: "6 to 8 feet is the standard spacing. Closer spacing (6 ft) is stronger; 8 ft spacing works with heavier lumber.",
-      },
-      {
-        q: "How deep should fence posts be set?",
-        a: "One-third of the post's total length should be in the ground. For a 6 ft fence use 9 ft posts set 3 ft deep.",
-      },
-      {
-        q: "How many rails does a fence need?",
-        a: "Two rails (top and bottom) is standard for fences up to 4 ft. Use three rails for 6 ft privacy fences.",
-      },
-    ],
-    inputs: [
-      { id: "length", label: "Total fence length", unit: "ft", default: 100, min: 0, step: 1 },
-      { id: "spacing", label: "Post spacing", unit: "ft", default: 8, min: 1, step: 0.5 },
-      { id: "gates", label: "Gate openings", default: 1, min: 0, step: 1 },
-      { id: "rails", label: "Rails per section", default: 2, min: 1, step: 1 },
-      { id: "picketWidth", label: "Picket width", unit: "in", default: 3.5, min: 1, step: 0.25 },
-    ],
-    compute: (v) => {
-      const sections = Math.floor(v.length / v.spacing);
-      const posts = sections + 1 + v.gates * 2;
-      const totalRails = sections * v.rails;
-      const picketWidthFt = v.picketWidth / 12;
-      const pickets = Math.ceil(sections * (v.spacing / picketWidthFt));
-      return [
-        { label: "Fence posts", value: `${fmt(posts, 0)} posts`, highlight: true },
-        { label: "Rails", value: `${fmt(totalRails, 0)} rails` },
-        { label: "Pickets", value: `${fmt(pickets, 0)} pickets` },
-        { label: "Sections", value: `${fmt(sections, 0)} sections` },
+        { label: "Concrete needed", value: `${fmt(cy)} cubic yards`, highlight: true },
+        { label: "Volume", value: `${fmt(cf)} cubic feet` },
+        { label: "80 lb bags", value: `${fmt(bags80, 0)} bags` },
+        { label: "60 lb bags", value: `${fmt(bags60, 0)} bags` },
       ];
     },
   },
@@ -602,65 +360,116 @@ export const CALCULATORS: CalculatorDef[] = [
     },
   },
 
-  // ── Asphalt Calculator ────────────────────────────────────────────────────
   {
-    slug: "asphalt-calculator",
-    name: "Asphalt Calculator",
-    emoji: "🚗",
-    title: "Asphalt Calculator — Tons of Asphalt for Driveways & Paths (Free)",
+    slug: "gravel-calculator",
+    name: "Gravel Calculator",
+    emoji: "🪨",
+    title: "Gravel Calculator — Cubic Yards & Tons of Gravel (Free)",
     metaDescription:
-      "Free asphalt calculator. Estimate the tons of hot-mix asphalt needed for a driveway, parking lot or path. Enter dimensions and depth. Instant and accurate.",
-    h1: "Asphalt Calculator",
-    intro: "Estimate the tons of asphalt you need for a driveway, parking lot or path.",
+      "Free gravel calculator. Estimate the cubic yards, tons and weight of gravel or crushed stone needed for a driveway, path or base layer. Instant and accurate.",
+    h1: "Gravel Calculator",
+    intro: "Estimate the cubic yards and tons of gravel needed for a driveway, path or base.",
     keywords: [
-      "asphalt calculator",
-      "blacktop calculator",
-      "how much asphalt do i need",
-      "asphalt tonnage calculator",
-      "driveway asphalt calculator",
+      "gravel calculator",
+      "how much gravel do i need",
+      "cubic yards of gravel",
+      "gravel tonnage calculator",
+      "crushed stone calculator",
     ],
     howTo: [
       "Enter the length and width of the area in feet.",
-      "Enter the asphalt depth in inches (2–3\" for a top coat; 4\" for a full driveway).",
-      "Read the cubic yards and tons of hot-mix asphalt to order.",
+      "Enter the gravel depth in inches (2-4\" is typical).",
+      "Read the cubic yards and approximate tons you need.",
     ],
-    body: "This asphalt calculator works out the volume of your paved area and converts it to tons of hot-mix asphalt (HMA). Asphalt weighs about 145 lb per cubic foot, or roughly 2.0 tons per cubic yard — slightly heavier than gravel. For a typical residential driveway, use a 4-inch depth over a compacted gravel base. For a resurfacing overlay (top coat only), 2 inches is common. Suppliers sell asphalt by the ton, so that figure is what you will give them when ordering.",
-    formula: "Cubic yards = (Length × Width × Depth ft) / 27; Tons = Cubic yards × 2.0.",
+    body: "This gravel calculator finds the volume of your area and converts it to cubic yards and to tons. Gravel and crushed stone weigh roughly 1.4 tons per cubic yard (about 2,800 lb), though this varies a little with stone size and moisture. Suppliers usually sell gravel by the ton, so the tonnage figure is what you will order. For a driveway, a 4 inch depth over a compacted base is common; for a decorative path, 2 inches is usually enough.",
+    formula: "Cubic yards = (Length ft x Width ft x Depth ft) / 27; Tons = Cubic yards x 1.4.",
     formulaSteps: [
       "Step 1 — Convert depth to feet: Depth (ft) = Depth (in) ÷ 12",
       "Step 2 — Volume in cubic feet: Volume (ft³) = Length × Width × Depth (ft)",
       "Step 3 — Convert to cubic yards: Cubic yards = Volume (ft³) ÷ 27",
-      "Step 4 — Weight in tons: Tons = Cubic yards × 2.0  (HMA ≈ 145 lb/ft³ ≈ 2.0 t/yd³)",
+      "Step 4 — Estimate weight: Tons = Cubic yards × 1.4  (gravel ≈ 2,800 lb/yd³)",
     ],
     faq: [
       {
-        q: "How thick should a residential driveway be?",
-        a: "A new residential driveway typically uses 4 inches of compacted hot-mix asphalt over a 6-inch compacted gravel base. Resurface overlays are usually 2 inches.",
+        q: "How many tons of gravel are in a cubic yard?",
+        a: "About 1.4 tons (roughly 2,800 lb) per cubic yard for typical gravel and crushed stone, varying slightly with stone type and moisture.",
       },
       {
-        q: "How many tons of asphalt are in a cubic yard?",
-        a: "Hot-mix asphalt weighs about 145 lb per cubic foot, which is approximately 2.0 tons per cubic yard. This is denser than gravel (1.4 t/yd³).",
-      },
-      {
-        q: "What is the difference between asphalt and blacktop?",
-        a: "They are essentially the same material. 'Blacktop' is the common residential term; 'asphalt' or 'hot-mix asphalt (HMA)' is the industry term.",
+        q: "How deep should gravel be for a driveway?",
+        a: "About 4 inches over a well-compacted sub-base is common for residential driveways. Decorative paths can use 2 inches.",
       },
     ],
     inputs: [
-      { id: "length", label: "Length", unit: "ft", default: 40, min: 0, step: 1 },
-      { id: "width", label: "Width", unit: "ft", default: 12, min: 0, step: 0.5 },
+      { id: "length", label: "Length", unit: "ft", default: 20, min: 0, step: 0.5 },
+      { id: "width", label: "Width", unit: "ft", default: 10, min: 0, step: 0.5 },
       { id: "depth", label: "Depth", unit: "in", default: 4, min: 0, step: 0.5 },
     ],
     compute: (v) => {
       const cf = v.length * v.width * (v.depth / 12);
       const cy = cf / 27;
-      const tons = cy * 2.0;
+      const tons = cy * 1.4;
       const lbs = tons * 2000;
       return [
-        { label: "Asphalt needed", value: `${fmt(tons)} tons`, highlight: true },
+        { label: "Gravel needed", value: `${fmt(tons)} tons`, highlight: true },
         { label: "Volume", value: `${fmt(cy)} cubic yards` },
         { label: "Volume", value: `${fmt(cf)} cubic feet` },
         { label: "Approx. weight", value: `${fmt(lbs, 0)} lb` },
+      ];
+    },
+  },
+
+  {
+    slug: "mulch-calculator",
+    name: "Mulch Calculator",
+    emoji: "🌳",
+    title: "Mulch Calculator — Cubic Yards & Bags of Mulch (Free)",
+    metaDescription:
+      "Free mulch calculator. Find how many cubic yards and 2-cubic-foot bags of mulch you need to cover a garden bed at a given depth. Instant and accurate.",
+    h1: "Mulch Calculator",
+    intro: "Find how many cubic yards and bags of mulch you need for your garden beds.",
+    keywords: [
+      "mulch calculator",
+      "how much mulch do i need",
+      "cubic yards of mulch",
+      "mulch bag calculator",
+      "bags of mulch per yard",
+    ],
+    howTo: [
+      "Enter the bed length and width in feet.",
+      "Enter the mulch depth in inches (2-3\" is typical).",
+      "Read the cubic yards and number of bags you need.",
+    ],
+    body: "This mulch calculator multiplies the bed area by the depth to get volume, then converts it to cubic yards (how bulk mulch is sold) and to standard 2-cubic-foot bags. A 2-3 inch layer is ideal for most beds: deep enough to suppress weeds and hold moisture, but not so deep that it smothers roots. Bulk mulch by the cubic yard is far cheaper than bags once you need more than about 12-15 bags, so the bag count helps you decide whether to bag or go bulk.",
+    formula: "Cubic yards = (Length ft x Width ft x Depth ft) / 27, where Depth ft = inches / 12.",
+    formulaSteps: [
+      "Step 1 — Convert depth to feet: Depth (ft) = Depth (in) ÷ 12",
+      "Step 2 — Volume in cubic feet: Volume (ft³) = Length × Width × Depth (ft)",
+      "Step 3 — Convert to cubic yards: Cubic yards = Volume (ft³) ÷ 27",
+      "Step 4 — Count bags: Bags = ⌈Volume (ft³) ÷ 2⌉  (standard 2 ft³ bag)",
+    ],
+    faq: [
+      {
+        q: "How many bags of mulch are in a cubic yard?",
+        a: "A cubic yard is 27 cubic feet, so it takes 13.5 bags of the standard 2-cubic-foot size to equal one cubic yard.",
+      },
+      {
+        q: "How deep should mulch be?",
+        a: "2-3 inches is ideal for most garden beds. Too deep can suffocate roots and waste material.",
+      },
+    ],
+    inputs: [
+      { id: "length", label: "Bed length", unit: "ft", default: 20, min: 0, step: 0.5 },
+      { id: "width", label: "Bed width", unit: "ft", default: 4, min: 0, step: 0.5 },
+      { id: "depth", label: "Depth", unit: "in", default: 3, min: 0, step: 0.5 },
+    ],
+    compute: (v) => {
+      const cf = v.length * v.width * (v.depth / 12);
+      const cy = cf / 27;
+      const bags = Math.ceil(cf / 2);
+      return [
+        { label: "Mulch needed", value: `${fmt(cy)} cubic yards`, highlight: true },
+        { label: "Volume", value: `${fmt(cf)} cubic feet` },
+        { label: "2 cu ft bags", value: `${fmt(bags, 0)} bags` },
       ];
     },
   },
@@ -732,6 +541,202 @@ export const CALCULATORS: CalculatorDef[] = [
       ];
     },
   },
+
+  // ── Fencing Calculator ────────────────────────────────────────────────────
+  {
+    slug: "fencing-calculator",
+    name: "Fencing Calculator",
+    emoji: "🏡",
+    title: "Fencing Calculator — Posts, Rails & Pickets Needed (Free)",
+    metaDescription:
+      "Free fencing calculator. Enter total fence length and spacing to find the number of posts, rails and pickets you need. Includes gates. Instant and accurate.",
+    h1: "Fencing Calculator",
+    intro: "Find out how many posts, rails and pickets you need to build your fence.",
+    keywords: [
+      "fencing calculator",
+      "fence calculator",
+      "how many fence posts do i need",
+      "fence material calculator",
+      "fence picket calculator",
+    ],
+    howTo: [
+      "Enter the total fence length in feet.",
+      "Enter the post spacing in feet (6–8 ft is standard).",
+      "Enter the number of gate openings, rails per section, and picket width.",
+    ],
+    body: "This fencing calculator works out the posts, rails and pickets for a standard wooden privacy or picket fence. Posts are spaced at equal intervals along the fence run; sections = posts − 1. Each section gets the specified number of rails. Pickets are spaced at the given width with a small gap (about 0.25 in). For gates, each opening needs two gate posts. Always add 10% extra pickets for cuts and waste.",
+    formula: "Posts = floor(Length / Spacing) + 1; Pickets per section = ceil(Spacing / Picket width); Total pickets = Pickets per section × Sections.",
+    formulaSteps: [
+      "Step 1 — Number of sections: Sections = ⌊Total length ÷ Post spacing⌋",
+      "Step 2 — Number of posts: Posts = Sections + 1 + (Gates × 2) extra gate posts",
+      "Step 3 — Rails: Total rails = Sections × Rails per section",
+      "Step 4 — Pickets per section: Pickets = ⌈Post spacing ÷ Picket width⌉",
+      "Step 5 — Total pickets: Total = Pickets per section × Sections",
+    ],
+    faq: [
+      {
+        q: "How far apart should fence posts be?",
+        a: "6 to 8 feet is the standard spacing. Closer spacing (6 ft) is stronger; 8 ft spacing works with heavier lumber.",
+      },
+      {
+        q: "How deep should fence posts be set?",
+        a: "One-third of the post's total length should be in the ground. For a 6 ft fence use 9 ft posts set 3 ft deep.",
+      },
+      {
+        q: "How many rails does a fence need?",
+        a: "Two rails (top and bottom) is standard for fences up to 4 ft. Use three rails for 6 ft privacy fences.",
+      },
+    ],
+    inputs: [
+      { id: "length", label: "Total fence length", unit: "ft", default: 100, min: 0, step: 1 },
+      { id: "spacing", label: "Post spacing", unit: "ft", default: 8, min: 1, step: 0.5 },
+      { id: "gates", label: "Gate openings", default: 1, min: 0, step: 1 },
+      { id: "rails", label: "Rails per section", default: 2, min: 1, step: 1 },
+      { id: "picketWidth", label: "Picket width", unit: "in", default: 3.5, min: 1, step: 0.25 },
+    ],
+    compute: (v) => {
+      const sections = Math.floor(v.length / v.spacing);
+      const posts = sections + 1 + v.gates * 2;
+      const totalRails = sections * v.rails;
+      const picketWidthFt = v.picketWidth / 12;
+      const pickets = Math.ceil(sections * (v.spacing / picketWidthFt));
+      return [
+        { label: "Fence posts", value: `${fmt(posts, 0)} posts`, highlight: true },
+        { label: "Rails", value: `${fmt(totalRails, 0)} rails` },
+        { label: "Pickets", value: `${fmt(pickets, 0)} pickets` },
+        { label: "Sections", value: `${fmt(sections, 0)} sections` },
+      ];
+    },
+  },
+
+  // ── Deck Calculator ───────────────────────────────────────────────────────
+  {
+    slug: "deck-calculator",
+    name: "Deck Calculator",
+    emoji: "🪵",
+    title: "Deck Calculator — How Many Deck Boards Do I Need (Free)",
+    metaDescription:
+      "Free deck board calculator. Enter your deck size and board width to find out how many deck boards you need, including a waste factor. Instant and accurate.",
+    h1: "Deck Board Calculator",
+    intro: "Find out how many deck boards you need for your deck or patio, with waste included.",
+    keywords: [
+      "deck calculator",
+      "deck board calculator",
+      "how many deck boards do i need",
+      "deck material calculator",
+      "deck square footage calculator",
+    ],
+    howTo: [
+      "Enter the deck length and width in feet.",
+      "Enter the board width in inches (5.5\" is common for 2×6 boards).",
+      "Set a waste allowance and read the board count and linear feet.",
+    ],
+    body: "This deck board calculator works out how many boards you need to cover a rectangular deck. It divides the deck area by the coverage of one board (length × width). Add a 10% waste allowance for end cuts, bad boards and future repairs — use 15% if your deck has angled corners or a picture-frame border. Results show board count and total linear feet, which is how lumber yards typically sell decking.",
+    formula: "Boards = ceil( Deck area × (1 + Waste%) / (Board width ft × Board length ft) ).",
+    formulaSteps: [
+      "Step 1 — Board width in feet: Board width (ft) = Board width (in) ÷ 12",
+      "Step 2 — Deck area: Area = Deck length × Deck width",
+      "Step 3 — Add waste: Area with waste = Area × (1 + Waste% ÷ 100)",
+      "Step 4 — Board count: Boards = ⌈Area with waste ÷ (Board width ft × Deck length)⌉",
+      "Step 5 — Linear feet: Linear ft = Boards × Deck length",
+    ],
+    faq: [
+      {
+        q: "What width are most deck boards?",
+        a: "2×6 lumber has an actual width of 5.5 inches; 5/4×6 decking is also 5.5 inches wide. Use 3.5 inches for 2×4 boards.",
+      },
+      {
+        q: "How much waste should I add for decking?",
+        a: "10% is standard for a simple rectangular deck. Use 15% for decks with angled cuts, picture-frame borders or complex shapes.",
+      },
+      {
+        q: "Does this include the frame and joists?",
+        a: "No, this calculates decking boards only. The structural frame (beams, joists, posts, hardware) requires a separate estimate.",
+      },
+    ],
+    inputs: [
+      { id: "length", label: "Deck length", unit: "ft", default: 16, min: 0, step: 0.5 },
+      { id: "width", label: "Deck width", unit: "ft", default: 12, min: 0, step: 0.5 },
+      { id: "boardWidth", label: "Board width", unit: "in", default: 5.5, min: 1, step: 0.25 },
+      { id: "waste", label: "Waste allowance", unit: "%", default: 10, min: 0, step: 1 },
+    ],
+    compute: (v) => {
+      const deckArea = v.length * v.width;
+      const boardWidthFt = v.boardWidth / 12;
+      const withWaste = deckArea * (1 + v.waste / 100);
+      const boards = Math.ceil(withWaste / (boardWidthFt * v.length));
+      const linearFt = boards * v.length;
+      return [
+        { label: "Deck boards needed", value: `${fmt(boards, 0)} boards`, highlight: true },
+        { label: "Linear feet of decking", value: `${fmt(linearFt)} lin ft` },
+        { label: "Deck area", value: `${fmt(deckArea)} sq ft` },
+        { label: "Area incl. waste", value: `${fmt(withWaste)} sq ft` },
+      ];
+    },
+  },
+
+  // ── Asphalt Calculator ────────────────────────────────────────────────────
+  {
+    slug: "asphalt-calculator",
+    name: "Asphalt Calculator",
+    emoji: "🚗",
+    title: "Asphalt Calculator — Tons of Asphalt for Driveways & Paths (Free)",
+    metaDescription:
+      "Free asphalt calculator. Estimate the tons of hot-mix asphalt needed for a driveway, parking lot or path. Enter dimensions and depth. Instant and accurate.",
+    h1: "Asphalt Calculator",
+    intro: "Estimate the tons of asphalt you need for a driveway, parking lot or path.",
+    keywords: [
+      "asphalt calculator",
+      "blacktop calculator",
+      "how much asphalt do i need",
+      "asphalt tonnage calculator",
+      "driveway asphalt calculator",
+    ],
+    howTo: [
+      "Enter the length and width of the area in feet.",
+      "Enter the asphalt depth in inches (2–3\" for a top coat; 4\" for a full driveway).",
+      "Read the cubic yards and tons of hot-mix asphalt to order.",
+    ],
+    body: "This asphalt calculator works out the volume of your paved area and converts it to tons of hot-mix asphalt (HMA). Asphalt weighs about 145 lb per cubic foot, or roughly 2.0 tons per cubic yard — slightly heavier than gravel. For a typical residential driveway, use a 4-inch depth over a compacted gravel base. For a resurfacing overlay (top coat only), 2 inches is common. Suppliers sell asphalt by the ton, so that figure is what you will give them when ordering.",
+    formula: "Cubic yards = (Length × Width × Depth ft) / 27; Tons = Cubic yards × 2.0.",
+    formulaSteps: [
+      "Step 1 — Convert depth to feet: Depth (ft) = Depth (in) ÷ 12",
+      "Step 2 — Volume in cubic feet: Volume (ft³) = Length × Width × Depth (ft)",
+      "Step 3 — Convert to cubic yards: Cubic yards = Volume (ft³) ÷ 27",
+      "Step 4 — Weight in tons: Tons = Cubic yards × 2.0  (HMA ≈ 145 lb/ft³ ≈ 2.0 t/yd³)",
+    ],
+    faq: [
+      {
+        q: "How thick should a residential driveway be?",
+        a: "A new residential driveway typically uses 4 inches of compacted hot-mix asphalt over a 6-inch compacted gravel base. Resurface overlays are usually 2 inches.",
+      },
+      {
+        q: "How many tons of asphalt are in a cubic yard?",
+        a: "Hot-mix asphalt weighs about 145 lb per cubic foot, which is approximately 2.0 tons per cubic yard. This is denser than gravel (1.4 t/yd³).",
+      },
+      {
+        q: "What is the difference between asphalt and blacktop?",
+        a: "They are essentially the same material. 'Blacktop' is the common residential term; 'asphalt' or 'hot-mix asphalt (HMA)' is the industry term.",
+      },
+    ],
+    inputs: [
+      { id: "length", label: "Length", unit: "ft", default: 40, min: 0, step: 1 },
+      { id: "width", label: "Width", unit: "ft", default: 12, min: 0, step: 0.5 },
+      { id: "depth", label: "Depth", unit: "in", default: 4, min: 0, step: 0.5 },
+    ],
+    compute: (v) => {
+      const cf = v.length * v.width * (v.depth / 12);
+      const cy = cf / 27;
+      const tons = cy * 2.0;
+      const lbs = tons * 2000;
+      return [
+        { label: "Asphalt needed", value: `${fmt(tons)} tons`, highlight: true },
+        { label: "Volume", value: `${fmt(cy)} cubic yards` },
+        { label: "Volume", value: `${fmt(cf)} cubic feet` },
+        { label: "Approx. weight", value: `${fmt(lbs, 0)} lb` },
+      ];
+    },
+  }
 ];
 
 export function getCalculator(slug: string): CalculatorDef | undefined {
