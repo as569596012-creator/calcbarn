@@ -2,6 +2,7 @@
   "name": "calcbarn",
   "version": "0.1.0",
   "private": true,
+  "license": "MIT",
   "description": "CalcBarn — Free home & construction calculators (concrete, paint, flooring, mulch, gravel). Static SEO site.",
   "scripts": {
     "dev": "next dev",
