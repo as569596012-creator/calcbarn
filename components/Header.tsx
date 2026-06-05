@@ -18,6 +18,9 @@ export default function Header() {
               {c.name.replace(" Calculator", "")}
             </Link>
           ))}
+          <Link href="/guides/" className="hover:text-brand-700">
+            Guides
+          </Link>
         </nav>
       </div>
     </header>
